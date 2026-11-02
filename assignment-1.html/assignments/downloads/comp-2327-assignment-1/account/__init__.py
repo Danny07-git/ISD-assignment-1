@@ -1,7 +1,7 @@
-"""Account management package."""
+"""Public models for the bank account domain."""
 
-from account.account_status import AccountStatus
-from account.bank_account import BankAccount
-from account.client import Client
+from .account_status import AccountStatus
+from .bank_account import BankAccount
+from .client import Client
 
 __all__ = ["AccountStatus", "BankAccount", "Client"]
