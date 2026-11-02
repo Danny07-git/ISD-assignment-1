@@ -1,0 +1,179 @@
+/**** v1.0 Released Feb 5 2019 ****/
+/***  RRC Fixes and Overrides ***/
+
+/** Suppress Tiny MCE from changing template fonts while editing **/
+body#tinymce.mce-content-body{
+  font-family:inherit !important;
+}
+
+/** Allows all Accordion folds to be open for editing **/
+@import "https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700,800,900,1000"; 
+.mce-content-body .collapse {
+  display: block;
+}
+
+p {
+  line-height: 1.5rem !important;
+}
+
+a {
+  text-decoration: underline;
+  /* break long URLS: These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+h1 {
+  color: #006fbf;
+  font-size: 2.2rem;
+}
+
+h2 {
+  color: #006fbf;
+  font-size: 1.8rem;
+}
+
+h3 {
+  font-size: 1.3rem;
+}
+
+h4 {
+  color: #006fbf;
+  text-transform: none;
+  margin-top: 20px;
+  font-size: 1.1rem;
+}
+
+.stock-credit {
+  font-size: .5rem;
+}
+
+.well-icon {
+  min-height: 100px;
+}
+
+.well-solid {
+    background-color: #006fbf;
+    color: #FFFFFF;
+    font-size: ;
+}
+
+.well {
+  border: 3px solid #006fbf;
+}
+
+.well-text-rrc-override p {
+  font-size: 1.1rem;
+}
+
+blockquote {
+  color: #006fbf;
+  margin: 0px 0px 0px 0px;
+  padding:0px 0px 0px 0px;
+  margin-left: 3rem;
+  margin-right:1rem;
+  text-align: left;
+  padding-left:.5rem;
+  font-weight: 700;
+}
+
+blockquote:before {
+  border-right: .25rem solid #006fbf;
+  content: open-quote;
+  opacity: 0.5;
+  font-size: 4rem;
+  font-family: serif;
+  display: inline-block;
+  position:absolute;
+  margin-left:-3rem;
+  margin-bottom:1rem;
+  padding-right:.25rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+}
+
+blockquote cite {
+ font-size: .8rem;
+}
+
+ol.large-number li:before {
+  color: #006fbf;
+}
+
+.icon-list-check li:before, ul.list-icon.list-check span:before {
+  color: #006fbf;
+}
+
+.table-responsive > thead > tr > th, .table-responsive > tbody > tr > th, .table > thead > tr > th, .table > tbody > tr > th {
+    background-color: #006fbf;
+    color: #FFFFFF;
+}
+
+.table > thead > tr > th, th {font-weight: 600;}
+
+caption, .table-responsive caption, .table caption {background-color: #006FBF;}
+
+dd {
+  margin: 0rem 1.2rem 1.2rem 1.2rem;
+  padding: 0rem 0rem 1rem 1rem;
+  border-left:3px solid #D3D9E3;
+  border-bottom:1px solid #D3D9E3;
+}
+
+.video-wrapper {
+  background-color: #006fbf;
+}
+
+.iframe-container {
+  overflow: hidden;
+  padding-top: 56.25%;
+  position: relative;
+}
+
+.iframe-container iframe {
+   border: 0;
+   height: 100%;
+   left: 0;
+   position: absolute;
+   top: 0;
+   width: 100%;
+}
+
+/* 4x3 Aspect Ratio */
+.iframe-container-4x3 {
+  padding-top: 75%;
+}
+
+
+@media (max-width: 640px) {
+
+  .rrc-img {
+    width: inherit;
+  }
+
+}
+
+@media only screen and (min-width: 641px) and (max-width: 768px){
+
+  .rrc-img {
+    width: 35%;
+  }
+
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px){
+  .rrc-img {
+    width: 30%;
+  }
+}
+
+@media (min-width: 1025px) {
+  .rrc-img {
+    width: 25%;
+  }
+}
