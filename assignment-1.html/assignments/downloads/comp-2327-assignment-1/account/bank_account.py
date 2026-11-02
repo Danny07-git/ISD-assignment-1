@@ -1,53 +1,33 @@
-
-"""
-Defines the BankAccount class.
-
-A BankAccount represents an account held by a client
-at a financial institution.
-"""
+"""Bank account model."""
 
 from decimal import Decimal
 
-from account.account_status import AccountStatus
-from account.client import Client
+from .account_status import AccountStatus
+from .client import Client
 
 
 class BankAccount:
-    """Represents a bank account belonging to a client."""
+    """Store account ownership, status, and balance operations."""
 
     def __init__(
         self,
         account_id: int,
         balance: Decimal,
         owner: Client,
-        status: AccountStatus
-    ):
-        """
-        Initialize a BankAccount instance.
-
-        Args:
-            account_id: Unique account identifier.
-            balance: Initial account balance.
-            owner: Client who owns the account.
-            status: Current account status.
-
-        Raises:
-            ValueError: If account_id is less than or equal to zero.
-        """
-
+        status: AccountStatus,
+    ) -> None:
+        """Create an account, rejecting identifiers that are not positive."""
         if account_id <= 0:
-            raise ValueError(
-                "account_id must be a value greater than zero"
-            )
-
+            raise ValueError("account_id must be a value greater than zero")
         self.__account_id = account_id
-        self.__balance = balance
+        # Convert through str so floats do not import their binary rounding noise.
+        self.__balance = Decimal(str(balance))
         self.__owner = owner
         self.__status = status
 
     @property
     def account_id(self) -> int:
-        """Return the account identifier."""
+        """Return the account's unique identifier."""
         return self.__account_id
 
     @property
@@ -57,72 +37,34 @@ class BankAccount:
 
     @property
     def owner(self) -> Client:
-        """Return the account owner."""
+        """Return the client who owns this account."""
         return self.__owner
 
     @property
     def status(self) -> AccountStatus:
-        """Return the current account status."""
+        """Return the account's current status."""
         return self.__status
 
     def update_balance(self, amount: Decimal) -> None:
-        """
-        Update the account balance by the specified amount.
-
-        Positive amounts increase the balance.
-        Negative amounts decrease the balance.
-
-        Args:
-            amount: Amount to add to or subtract from the balance.
-        """
-        self.__balance += amount
+        """Add a signed amount to the balance without applying transaction rules."""
+        self.__balance += Decimal(str(amount))
 
     def deposit(self, amount: Decimal) -> None:
-        """
-        Deposit money into the account.
-
-        Args:
-            amount: Amount to deposit.
-
-        Raises:
-            ValueError: If the amount is negative.
-        """
-
+        """Add a non-negative amount to the account balance."""
+        amount = Decimal(str(amount))
         if amount < 0:
-            raise ValueError(
-                "amount must be a value greater than or equal to zero"
-            )
-
+            raise ValueError("amount must be a value greater than or equal to zero")
         self.update_balance(amount)
 
     def withdraw(self, amount: Decimal) -> None:
-        """
-        Withdraw money from the account.
-
-        Args:
-            amount: Amount to withdraw.
-
-        Raises:
-            ValueError: If the amount is negative or exceeds
-                        the available account balance.
-        """
-
+        """Subtract a non-negative amount that does not exceed the balance."""
+        amount = Decimal(str(amount))
         if amount < 0:
-            raise ValueError(
-                "amount must be a value greater than or equal to zero"
-            )
-
+            raise ValueError("amount must be a value greater than or equal to zero")
         if amount > self.__balance:
-            raise ValueError(
-                "amount cannot exceed the account balance"
-            )
-
+            raise ValueError("amount cannot exceed the account balance")
         self.update_balance(-amount)
 
     def __str__(self) -> str:
-        """Return a formatted string representation of the account."""
-
-        return (
-            f"Account Number: {self.__account_id} "
-            f"Balance: ${self.__balance:,.2f}"
-        )
+        """Return the account number and currency-formatted balance."""
+        return f"Account Number: {self.__account_id} Balance: ${self.__balance:,.2f}"
