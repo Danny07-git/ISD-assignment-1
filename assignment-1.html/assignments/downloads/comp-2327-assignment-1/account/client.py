@@ -1,55 +1,32 @@
+"""Financial institution client model."""
 
-"""
-Defines the Client class.
-
-A Client represents a customer of a financial institution.
-Client information includes a unique identifier, name,
-and validated email address.
-"""
-
-from email_validator import validate_email, EmailNotValidError
+from email_validator import validate_email
 
 
 class Client:
-    """Represents a financial institution's client."""
+    """Represent a financial institution client and their contact details."""
 
-    def __init__(
-        self,
-        client_id: int,
-        name: str,
-        email_address: str
-    ):
-        """
-        Initialize a Client instance.
-
-        Args:
-            client_id: Unique client identifier.
-            name: Client's full name.
-            email_address: Client's email address.
-
-        Raises:
-            ValueError: If the client ID is invalid or name is empty.
-            EmailNotValidError: If the email address is invalid.
-        """
-
+    def __init__(self, client_id: int, name: str, email_address: str) -> None:
+        """Create a client after validating its identifier, name, and email."""
         if client_id <= 0:
-            raise ValueError(
-                "client_id must be a value greater than zero"
-            )
-
-        name = name.strip()
-
-        if not name:
-            raise ValueError(
-                "name cannot be an empty string"
-            )
-
+            raise ValueError("client_id must be a value greater than zero")
         self.__client_id = client_id
-        self.__name = name
-        self.__email_address = email_address
+        self.__name = self._normalize_name(name)
+        self.__email_address = self._normalize_email(email_address)
 
-        # Validate and normalize the email address.
-        self.email_address = email_address
+    @staticmethod
+    def _normalize_name(name: str) -> str:
+        """Trim a name and reject it if no characters remain."""
+        normalized = name.strip()
+        if not normalized:
+            raise ValueError("name cannot be an empty string")
+        return normalized
+
+    @staticmethod
+    def _normalize_email(email_address: str) -> str:
+        """Return the validator's normalized email without checking deliverability."""
+        # Deliverability depends on DNS and is outside this model's validation rules.
+        return validate_email(email_address.strip(), check_deliverability=False).normalized
 
     @property
     def client_id(self) -> int:
@@ -58,39 +35,19 @@ class Client:
 
     @property
     def name(self) -> str:
-        """Return the client's name."""
+        """Return the client's trimmed name."""
         return self.__name
 
     @property
     def email_address(self) -> str:
-        """Return the client's normalized email address."""
+        """Return the normalized email address."""
         return self.__email_address
 
     @email_address.setter
     def email_address(self, email_address: str) -> None:
-        """
-        Validate and update the client's email address.
-
-        Args:
-            email_address: New email address.
-
-        Raises:
-            EmailNotValidError: If the email address is invalid.
-        """
-
-        email_address = email_address.strip()
-
-        validated_email = validate_email(
-            email_address,
-            check_deliverability=False
-        )
-
-        self.__email_address = validated_email.normalized
+        """Validate and normalize a replacement email address."""
+        self.__email_address = self._normalize_email(email_address)
 
     def __str__(self) -> str:
-        """Return a formatted string representation of the client."""
-
-        return (
-            f"{self.__name} [{self.__client_id}] - "
-            f"{self.__email_address}"
-        )
+        """Return the client name, client number, and email address."""
+        return f"{self.__name} [{self.__client_id}] - {self.__email_address}"
