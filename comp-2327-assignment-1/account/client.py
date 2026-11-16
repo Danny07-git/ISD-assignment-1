@@ -1,53 +1,49 @@
-"""Financial institution client model."""
+"""Client model and email-address validation."""
 
-from email_validator import validate_email
+from email_validator import EmailNotValidError, validate_email
 
 
 class Client:
-    """Represent a financial institution client and their contact details."""
+    """Represent a customer of a financial institution."""
 
-    def __init__(self, client_id: int, name: str, email_address: str) -> None:
-        """Create a client after validating its identifier, name, and email."""
+    def __init__(self, client_id, name, email_address):
         if client_id <= 0:
             raise ValueError("client_id must be a value greater than zero")
+        name = name.strip()
+        if not name:
+            raise ValueError("name cannot be an empty string")
         self.__client_id = client_id
-        self.__name = self._normalize_name(name)
+        self.__name = name
         self.__email_address = self._normalize_email(email_address)
 
     @staticmethod
-    def _normalize_name(name: str) -> str:
-        """Trim a name and reject it if no characters remain."""
-        normalized = name.strip()
-        if not normalized:
-            raise ValueError("name cannot be an empty string")
-        return normalized
-
-    @staticmethod
-    def _normalize_email(email_address: str) -> str:
-        """Return the validator's normalized email without checking deliverability."""
-        # Deliverability depends on DNS and is outside this model's validation rules.
-        return validate_email(email_address.strip(), check_deliverability=False).normalized
+    def _normalize_email(email_address):
+        """Validate an email without checking its deliverability."""
+        result = validate_email(email_address.strip(), check_deliverability=False)
+        return result.normalized
 
     @property
-    def client_id(self) -> int:
-        """Return the client's unique identifier."""
+    def client_id(self):
         return self.__client_id
 
     @property
-    def name(self) -> str:
-        """Return the client's trimmed name."""
+    def name(self):
         return self.__name
 
+    @name.setter
+    def name(self, value):
+        value = value.strip()
+        if not value:
+            raise ValueError("name cannot be an empty string")
+        self.__name = value
+
     @property
-    def email_address(self) -> str:
-        """Return the normalized email address."""
+    def email_address(self):
         return self.__email_address
 
     @email_address.setter
-    def email_address(self, email_address: str) -> None:
-        """Validate and normalize a replacement email address."""
-        self.__email_address = self._normalize_email(email_address)
+    def email_address(self, value):
+        self.__email_address = self._normalize_email(value)
 
-    def __str__(self) -> str:
-        """Return the client name, client number, and email address."""
+    def __str__(self):
         return f"{self.__name} [{self.__client_id}] - {self.__email_address}"

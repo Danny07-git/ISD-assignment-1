@@ -1,17 +1,16 @@
+"""Tests for the AccountStatus enumeration."""
+
 import unittest
 
 from account.account_status import AccountStatus
 
 
 class TestAccountStatus(unittest.TestCase):
-    """Tests for the account status enumeration values."""
-
-    def test_enum_values_are_initialized(self):
-        """Each defined status has the integer value from the class design."""
-        self.assertEqual(AccountStatus.INACTIVE.value, 0)
+    def test_enumeration_values_are_initialized(self):
         self.assertEqual(AccountStatus.ACTIVE.value, 1)
-        self.assertEqual(AccountStatus.SUSPENDED.value, 2)
-        self.assertEqual(AccountStatus.CLOSED.value, 3)
+        self.assertEqual(AccountStatus.CLOSED.value, 2)
+        self.assertEqual(AccountStatus.FROZEN.value, 3)
+        self.assertEqual(len(AccountStatus), 3)
 
 
 if __name__ == "__main__":
